@@ -4,9 +4,9 @@ import Burger from '../../component/Burger/Burger';
 import BuildControls from '../../component/Burger/BuildControls/BuildControls';
 
 const INGREDIENT_PRICE = {
-  slad: 0.5,
-  bacon: 0.7,
-  cheese: 1,
+  salad: 0.9,
+  bacon: 0.4,
+  cheese: 0.7,
   meat: 0.3,
 };
 
@@ -19,6 +19,23 @@ class BurgerBuilder extends Component {
       meat: 0,
     },
     totalPrice: 4,
+    purchasable: false,
+  };
+
+  updatePurchaseState = () => {
+    const ingredients = {
+      ...INGREDIENT_PRICE,
+    };
+    const sum = Object.keys(ingredients)
+      .map((igKey) => {
+        return ingredients[igKey];
+      })
+      .reduce((sum, el) => {
+        return (sum = sum + el);
+      }, 0);
+
+    this.setState({ purchasable: sum > 0 });
+    console.log('Is Purchasable: ', this.state.purchasable, sum);
   };
 
   addIngredient = (type) => {
@@ -33,6 +50,7 @@ class BurgerBuilder extends Component {
       ingredients: updatedIngredients,
       totalPrice: updatedPrice,
     });
+    this.updatePurchaseState();
   };
 
   removeIngredient = (type) => {
@@ -48,9 +66,7 @@ class BurgerBuilder extends Component {
       ingredients: updatedIngredients,
       totalPrice: updatedPrice,
     });
-    this.setState({
-      ingredients: updatedIngredients,
-    });
+    this.updatePurchaseState();
   };
 
   render() {
@@ -67,6 +83,8 @@ class BurgerBuilder extends Component {
           disabled={disabeldInfo}
           ingredientAdded={this.addIngredient}
           ingredientRemoved={this.removeIngredient}
+          price={this.state.totalPrice}
+          purchasable={this.state.purchasable}
         />
       </Aux>
     );
