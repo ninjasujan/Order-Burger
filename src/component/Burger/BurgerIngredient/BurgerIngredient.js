@@ -36,7 +36,7 @@ class BurgerIngredient extends React.Component {
         break;
 
       default:
-        ingredient;
+        ingredient = null;
     }
     return ingredient;
   }
