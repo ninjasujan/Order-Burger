@@ -1,6 +1,6 @@
 
 .Order {
-    width: 100%;
+    width: 80%;
     border: 1px solid #eee;
     box-shadow: 0 2px 3px #ccc;
     padding: 10px;
@@ -10,7 +10,7 @@
 
 
 
-.Order p {
+.Order span {
     display: inline-block;
     padding: 5px;
 }
