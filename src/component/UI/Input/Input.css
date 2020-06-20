@@ -30,3 +30,12 @@
 .Invalid {
   border: 2px solid red;
 }
+
+.ErrorMessage {
+  font-size: 0.8em;
+  color: red;
+}
+
+.Disabled {
+  cursor: none;
+}

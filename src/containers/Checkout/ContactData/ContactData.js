@@ -87,8 +87,11 @@ class ContactData extends React.Component {
         validation: {
           required: false,
         },
+        valid: true,
       },
     },
+    loading: false,
+    isvalidForm: false,
   };
 
   orderHandler = (event) => {
@@ -149,9 +152,13 @@ class ContactData extends React.Component {
     updatedFormElement.touched = true;
     updatedFormElement.value = event.target.value;
     updatedForm[inputIdentifier] = updatedFormElement;
-    console.log("[ContactData.js] form validation", updatedFormElement);
-    this.setState({ orderForm: updatedForm });
-    console.log("[ContactData.js] touched", updatedFormElement.touched);
+
+    let validForm = true;
+    for (let inputElement in updatedForm) {
+      validForm = updatedForm[inputElement].valid && validForm;
+    }
+
+    this.setState({ orderForm: updatedForm, isvalidForm: validForm });
   };
 
   render() {
@@ -175,7 +182,11 @@ class ContactData extends React.Component {
             isTouched={input.config.touched}
           />
         ))}
-        <Button btnType="Success" clicked={this.orderHandler}>
+        <Button
+          btnType="Success"
+          clicked={this.orderHandler}
+          disabled={!this.state.isvalidForm}
+        >
           ORDER
         </Button>
       </form>
