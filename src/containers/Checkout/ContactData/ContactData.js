@@ -108,7 +108,7 @@ class ContactData extends React.Component {
     }
     const order = {
       ingredients: this.props.ingredients,
-      price: this.props.totalPrice,
+      price: this.props.totalprice,
       orderData: formData,
     };
     this.props.onOrderBurger(order);
