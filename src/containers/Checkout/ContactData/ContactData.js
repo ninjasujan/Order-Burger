@@ -94,7 +94,6 @@ class ContactData extends React.Component {
         valid: true,
       },
     },
-    loading: false,
     isvalidForm: false,
   };
 
@@ -112,7 +111,6 @@ class ContactData extends React.Component {
       price: this.props.totalPrice,
       orderData: formData,
     };
-
     this.props.onOrderBurger(order);
   };
 
@@ -182,7 +180,7 @@ class ContactData extends React.Component {
         </Button>
       </form>
     );
-    if (this.state.loading) {
+    if (this.props.loading) {
       form = <Spinner />;
     }
     return (
@@ -196,8 +194,9 @@ class ContactData extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    ingredients: state.ingredients,
-    totalprice: state.totalPrice,
+    ingredients: state.burger.ingredients,
+    totalprice: state.burger.totalPrice,
+    loading: state.order.loading,
   };
 };
 
