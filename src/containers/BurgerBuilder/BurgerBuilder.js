@@ -1,15 +1,15 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
+import axios from "../../axios-orders";
 import Aux from "../../hoc/Auxiliary/Auxiliary";
 import Burger from "../../component/Burger/Burger";
 import BuildControls from "../../component/Burger/BuildControls/BuildControls";
 import Modal from "../../component/UI/Modal/Modal";
 import OrderSummary from "../../component/Burger/OrderSummary/OrderSummary";
-import axios from "../../axios-orders";
 import Spinner from "../../component/UI/Spinner/Spinner";
 import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
-import * as acttionTypes from "../../store/actions";
+import * as actionCreators from "../../store/actions/index";
 
 const INGREDIENT_PRICE = {
   salad: 0.9,
@@ -21,19 +21,10 @@ const INGREDIENT_PRICE = {
 class BurgerBuilder extends Component {
   state = {
     purchasable: false,
-    purchasing: false,
-    loading: false,
   };
 
   componentDidMount() {
-    // axios
-    //   .get('https://burger-app-bc3d2.firebaseio.com/ingredients.json')
-    //   .then((response) => {
-    //     this.setState({ ingredients: response.data });
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
+    this.props.onFetchIngredients();
   }
 
   updatePurchaseState = (ingredients) => {
@@ -96,10 +87,6 @@ class BurgerBuilder extends Component {
       );
     }
 
-    if (this.state.loading) {
-      orderSummary = <Spinner />;
-    }
-
     return (
       <Aux>
         <Modal
@@ -118,18 +105,17 @@ const mapStateToProps = (state) => {
   return {
     ings: state.ingredients,
     price: state.totalPrice,
+    error: state.error,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     onIngredientAdded: (ingName) =>
-      dispatch({ type: acttionTypes.ADD_INGREDIENT, ingredientName: ingName }),
+      dispatch(actionCreators.addIngredient(ingName)),
     onIngredientRemoved: (ingName) =>
-      dispatch({
-        type: acttionTypes.REMOVE_INGREDIENT,
-        ingredientName: ingName,
-      }),
+      dispatch(actionCreators.removeIngredient(ingName)),
+    onFetchIngredients: () => dispatch(actionCreators.setIngredients()),
   };
 };
 
