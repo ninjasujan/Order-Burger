@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import Aux from '../Auxiliary/Auxiliary';
-import classes from './Layout.css';
-import Toolbar from '../../component/Navigation/Toolbar/Toolbar';
-import SideDrawer from '../../component/SideDrawer/SideDrawer';
+import React, { Component } from "react";
+import Aux from "../Auxiliary/Auxiliary";
+import classes from "./Layout.css";
+import Toolbar from "../../component/Navigation/Toolbar/Toolbar";
+import SideDrawer from "../../component/SideDrawer/SideDrawer";
 
 class Layout extends Component {
   state = {
@@ -17,7 +17,7 @@ class Layout extends Component {
     this.setState((prevState) => {
       return { showSideDrawer: !prevState.showSideDrawer };
     });
-    console.log('[Layout.js]', this.state.showSideDrawer);
+    console.log("[Layout.js]", this.state.showSideDrawer);
   };
 
   render() {
