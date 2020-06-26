@@ -5,6 +5,7 @@ import classes from "./Auth.css";
 import Input from "../../component/UI/Input/Input";
 import Button from "../../component/UI/Button/Button";
 import * as actionCreators from "../../store/actions/index";
+import Spinner from "../../component/UI/Spinner/Spinner";
 
 class Auth extends Component {
   state = {
@@ -95,6 +96,7 @@ class Auth extends Component {
   };
 
   render() {
+    let input = <Spinner />;
     const formElementArray = [];
     for (let key in this.state.controls) {
       formElementArray.push({
@@ -102,20 +104,33 @@ class Auth extends Component {
         config: this.state.controls[key],
       });
     }
-    let input = formElementArray.map((input) => (
-      <Input
-        changed={(event) => this.inputChangeHandler(event, input.id)}
-        key={input.id}
-        elementType={input.config.elementType}
-        elementConfig={input.config.elementConfig}
-        value={input.config.value}
-        invalid={!input.config.valid}
-        isTouched={input.config.touched}
-      />
-    ));
+    if (!this.props.loading) {
+      input = formElementArray.map((input) => (
+        <Input
+          changed={(event) => this.inputChangeHandler(event, input.id)}
+          key={input.id}
+          elementType={input.config.elementType}
+          elementConfig={input.config.elementConfig}
+          value={input.config.value}
+          invalid={!input.config.valid}
+          isTouched={input.config.touched}
+        />
+      ));
+    }
+
+    console.log("[ErrorMessage]", this.props.error);
+
+    let errorMessage = null;
+    if (this.props.error) {
+      errorMessage = (
+        <p style={{ color: "red", fontSize: "1em" }}>{this.props.error}</p>
+      );
+    }
+
     return (
       <div className={classes.Auth}>
-        <h2>SIGN UP </h2>
+        <h2>{this.state.isSignUp ? "SIGN-UP" : "SIGN-IN"} </h2>
+        {errorMessage}
         <form onSubmit={this.submitHandler} noValidate>
           {input}
           <Button
@@ -134,6 +149,15 @@ class Auth extends Component {
   }
 }
 
+const mapStateToProps = (state) => {
+  return {
+    userId: state.auth.userId,
+    token: state.auth.token,
+    loading: state.auth.loading,
+    error: state.auth.error,
+  };
+};
+
 const mapDispatchToProps = (dispatch) => {
   return {
     onAuth: (email, password, isSignup) =>
@@ -141,4 +165,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(Auth);
+export default connect(mapStateToProps, mapDispatchToProps)(Auth);

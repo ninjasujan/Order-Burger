@@ -107,6 +107,7 @@ const mapStateToProps = (state) => {
     ings: state.burger.ingredients,
     price: state.burger.totalPrice,
     error: state.burger.error,
+    token: state.auth.token,
   };
 };
 
@@ -116,7 +117,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(actionCreators.addIngredient(ingName)),
     onIngredientRemoved: (ingName) =>
       dispatch(actionCreators.removeIngredient(ingName)),
-    onFetchIngredients: () => dispatch(actionCreators.setIngredients()),
+    onFetchIngredients: (token) =>
+      dispatch(actionCreators.setIngredients(token)),
     onInitPurchase: () => dispatch(actionCreators.purchaseInit()),
   };
 };
