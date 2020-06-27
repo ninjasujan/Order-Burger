@@ -133,7 +133,6 @@ class ContactData extends React.Component {
   }
 
   inputChangeHandler = (event, inputIdentifier) => {
-    console.log("[ContactData.js] Input values", event.target.value);
     const updatedForm = { ...this.state.orderForm };
     const updatedFormElement = {
       ...updatedForm[inputIdentifier],
