@@ -8,7 +8,7 @@ import Spinner from "../../../component/UI/Spinner/Spinner";
 import Input from "../../../component/UI/Input/Input";
 import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
 import * as actionCreators from "../../../store//actions/index";
-import { updateObject } from "../../../shared/utility";
+import { updateObject, checkValidity } from "../../../shared/utility";
 
 class ContactData extends React.Component {
   state = {
@@ -116,31 +116,13 @@ class ContactData extends React.Component {
     this.props.onOrderBurger(order, this.props.token);
   };
 
-  checkValidity(value, rules) {
-    let isValid = true;
-    if (isValid && rules.required) {
-      isValid = value.trim() !== "";
-    }
-    if (isValid && rules.minLength) {
-      isValid = rules.minLength <= value.trim().length;
-    }
-    if (isValid && rules.maxLength) {
-      isValid = value.trim().length <= rules.minLength;
-    }
-    if (rules.isEmail) {
-      const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
-      isValid = pattern.test(value) && isValid;
-    }
-    return isValid;
-  }
-
   inputChangeHandler = (event, inputIdentifier) => {
     const updatedFormElement = updateObject(
       this.state.orderForm[inputIdentifier],
       {
         touched: true,
         value: event.target.value,
-        valid: this.checkValidity(
+        valid: checkValidity(
           event.target.value,
           this.state.orderForm[inputIdentifier].validation
         ),
