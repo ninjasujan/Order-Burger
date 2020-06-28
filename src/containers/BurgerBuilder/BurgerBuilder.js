@@ -11,19 +11,13 @@ import Spinner from "../../component/UI/Spinner/Spinner";
 import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
 import * as actionCreators from "../../store/actions/index";
 
-const INGREDIENT_PRICE = {
-  salad: 0.9,
-  bacon: 0.4,
-  cheese: 0.7,
-  meat: 0.3,
-};
-
 class BurgerBuilder extends Component {
   state = {
     purchasable: false,
   };
 
   componentDidMount() {
+    console.log("[BurgerBuilder.js] ComponentDidMount");
     this.props.onFetchIngredients();
   }
 
@@ -41,7 +35,12 @@ class BurgerBuilder extends Component {
   };
 
   purchaseHandler = () => {
-    this.setState({ purchasing: true });
+    if (this.props.isAuthenticated) {
+      this.setState({ purchasing: true });
+    } else {
+      this.props.onAuthSetRedirectPath("/checkout");
+      this.props.history.push("/auth");
+    }
   };
 
   purchaseCancelHandler = () => {
@@ -75,6 +74,7 @@ class BurgerBuilder extends Component {
             price={this.props.price}
             purchasable={this.updatePurchaseState(this.props.ings)}
             ordered={this.purchaseHandler}
+            isAuth={this.props.isAuthenticated}
           />
         </Aux>
       );
@@ -107,6 +107,8 @@ const mapStateToProps = (state) => {
     ings: state.burger.ingredients,
     price: state.burger.totalPrice,
     error: state.burger.error,
+    token: state.auth.token,
+    isAuthenticated: state.auth.token != null,
   };
 };
 
@@ -116,8 +118,11 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(actionCreators.addIngredient(ingName)),
     onIngredientRemoved: (ingName) =>
       dispatch(actionCreators.removeIngredient(ingName)),
-    onFetchIngredients: () => dispatch(actionCreators.setIngredients()),
+    onFetchIngredients: (token) =>
+      dispatch(actionCreators.setIngredients(token)),
     onInitPurchase: () => dispatch(actionCreators.purchaseInit()),
+    onAuthSetRedirectPath: (path) =>
+      dispatch(actionCreators.setAuthRedirectPath(path)),
   };
 };
 
