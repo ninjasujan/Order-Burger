@@ -11,13 +11,6 @@ import Spinner from "../../component/UI/Spinner/Spinner";
 import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
 import * as actionCreators from "../../store/actions/index";
 
-const INGREDIENT_PRICE = {
-  salad: 0.9,
-  bacon: 0.4,
-  cheese: 0.7,
-  meat: 0.3,
-};
-
 class BurgerBuilder extends Component {
   state = {
     purchasable: false,
