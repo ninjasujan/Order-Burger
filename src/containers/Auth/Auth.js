@@ -103,6 +103,7 @@ class Auth extends Component {
   };
 
   render() {
+    console.log("[Auth.js] render method");
     let input = <Spinner />;
     const formElementArray = [];
     for (let key in this.state.controls) {

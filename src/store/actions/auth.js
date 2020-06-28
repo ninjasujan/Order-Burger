@@ -1,8 +1,5 @@
 import * as actionTypes from "../actions/actionTypes";
 import axios from "axios";
-import { fetchOrderFail } from "./orders";
-import { data } from "autoprefixer";
-import logo from "../../component/Logo/Logo";
 
 const authStart = () => {
   return {
@@ -88,17 +85,11 @@ export const authCheckState = () => {
   console.log("[AuthCheck state]");
   return (dispatch) => {
     const token = localStorage.getItem("token");
-    console.log("[AuthCheckState] token", token);
     if (!token) {
       dispatch(logout());
     } else {
       const expirationTime = new Date(localStorage.getItem("expirationTime"));
       const userId = localStorage.getItem("userId");
-      console.log(
-        "[AuthCkeckState] expiration Time and userId",
-        expirationTime,
-        userId
-      );
       if (new Date() > expirationTime) {
         dispatch(logout());
       } else {
