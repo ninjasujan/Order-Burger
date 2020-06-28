@@ -8,6 +8,7 @@ import Spinner from "../../../component/UI/Spinner/Spinner";
 import Input from "../../../component/UI/Input/Input";
 import withErrorHandler from "../../../hoc/withErrorHandler/withErrorHandler";
 import * as actionCreators from "../../../store//actions/index";
+import { updateObject } from "../../../shared/utility";
 
 class ContactData extends React.Component {
   state = {
@@ -134,17 +135,21 @@ class ContactData extends React.Component {
   }
 
   inputChangeHandler = (event, inputIdentifier) => {
-    const updatedForm = { ...this.state.orderForm };
-    const updatedFormElement = {
-      ...updatedForm[inputIdentifier],
-    };
-    updatedFormElement.valid = this.checkValidity(
-      event.target.value,
-      updatedFormElement.validation
+    const updatedFormElement = updateObject(
+      this.state.orderForm[inputIdentifier],
+      {
+        touched: true,
+        value: event.target.value,
+        valid: this.checkValidity(
+          event.target.value,
+          this.state.orderForm[inputIdentifier].validation
+        ),
+      }
     );
-    updatedFormElement.touched = true;
-    updatedFormElement.value = event.target.value;
-    updatedForm[inputIdentifier] = updatedFormElement;
+
+    const updatedForm = updateObject(this.state.orderForm, {
+      [inputIdentifier]: updatedFormElement,
+    });
 
     let validForm = true;
     for (let inputElement in updatedForm) {

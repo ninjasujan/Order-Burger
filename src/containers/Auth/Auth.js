@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import classes from "./Auth.css";
 import { Redirect } from "react-router-dom";
 
+import classes from "./Auth.css";
 import Input from "../../component/UI/Input/Input";
 import Button from "../../component/UI/Button/Button";
 import * as actionCreators from "../../store/actions/index";
 import Spinner from "../../component/UI/Spinner/Spinner";
+import { updateObject } from "../../shared/utility";
 
 class Auth extends Component {
   state = {
@@ -68,18 +69,16 @@ class Auth extends Component {
   }
 
   inputChangeHandler = (event, inputIdentifier) => {
-    const updatedControls = {
-      ...this.state.controls,
-      [inputIdentifier]: {
-        ...this.state.controls[inputIdentifier],
+    const updatedControls = updateObject(this.state.controls, {
+      [inputIdentifier]: updateObject(this.state.controls[inputIdentifier], {
         touched: true,
         value: event.target.value,
         valid: this.checkValidity(
           event.target.value,
           this.state.controls[inputIdentifier].validation
         ),
-      },
-    };
+      }),
+    });
 
     let validForm = true;
     for (let inputElement in updatedControls) {
